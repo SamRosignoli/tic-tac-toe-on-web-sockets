@@ -33,9 +33,9 @@ def on_join(data):
                 emit('joinGameSelf', {'status': 'success', 'nickname': nickname }, to=sid)
                 emit('joinGame', {'status': 'success', 'room': room_data, 'message': f'{nickname} has entered the room!'} , to=active_room.room_name)
             else:
-                emit('joinGameSelf', {'status': 'nick-taken', 'message': 'Nickname already taken'})
+                emit('joinGameSelf', {'status': 'nick-taken', 'message': 'Nickname already taken'}, to=sid)
         else:
-            emit('joinGameSelf', {'status': 'room-taken', 'message': 'Room already taken'})
+            emit('joinGameSelf', {'status': 'room-taken', 'message': 'Room already taken'}, to=sid)
     else:
         room = Room(requested_room_name)
         join_room(room.room_name)
@@ -72,7 +72,7 @@ def on_message(data):
     room = active_rooms[room_name]
 
     room.add_message(new_message)
-    emit('message', {'status': 'success', 'message': new_message}, to=room.room_name)
+    emit('message', {'status': 'success', 'room': room.to_dict()}, to=room.room_name)
 
 
 if __name__ == '__main__':

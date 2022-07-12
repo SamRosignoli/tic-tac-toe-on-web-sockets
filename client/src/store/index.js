@@ -87,6 +87,11 @@ export default new Vuex.Store({
           console.log(data.end);
         }
       }
+    },
+    onSocketEvent_message({ commit }, data) {
+      if (data.status === 'success') {
+        commit('setRoom', data.room);
+      }
     }
   },
   modules: {
