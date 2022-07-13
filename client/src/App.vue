@@ -32,9 +32,20 @@ export default {
 #app {
   font-family: 'Work Sans', sans-serif;
   color: #2c3e50;
+  display: grid;
+  place-items: center;
 }
 
 .app-connection-error {
+  text-align: center;
+}
+
+h1 {
+  font-size: 2rem;
+  text-align: center;
+}
+
+h2 {
   text-align: center;
 }
 </style>

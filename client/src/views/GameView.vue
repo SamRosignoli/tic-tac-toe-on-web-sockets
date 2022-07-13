@@ -1,9 +1,9 @@
 <template>
   <div v-if="room" class="game-view">
     <h1>{{ room.room_name }} (round {{ room.games + 1 }})</h1>
-    <score-board :me="me" :opponent="opponent" :games="room.games"/>
+    <score-board :me="me" :opponent="opponent" :games="room.games" :turn="room.turn"/>
     <h2>{{ turnDisplay }}</h2>
-    <tic-tac-toe-game :board="room.board" @choose-square="chooseSquare"/>
+    <tic-tac-toe-game :board="room.board" :is-my-turn="isMyTurn" @choose-square="chooseSquare"/>
   </div>
 </template>
 
@@ -28,6 +28,9 @@ export default {
     },
     me () {
       return this.$store.getters.me;
+    },
+    isMyTurn () {
+      return this.opponent && this.me.name === this.room.turn;
     },
     opponent () {
       return this.$store.getters.opponent;
