@@ -10,6 +10,7 @@ export default new Vuex.Store({
     nickname: null,
     room: {},
     joinErrorMessage: '',
+    winnerMessage: ''
   },
   getters: {
     isLoading (state) {
@@ -57,8 +58,11 @@ export default new Vuex.Store({
     setRoom(state, val) {
       state.room = val;
     },
-    setJoinErroMessage(state, val) {
+    setJoinErrorMessage(state, val) {
       state.joinErrorMessage = val;
+    },
+    setWinnerMessage(state, val) {
+      state.winnerMessage = val;
     },
   },
   actions: {
@@ -72,7 +76,7 @@ export default new Vuex.Store({
         commit('setNickname', data.nickname);
         router.push('game');
       } else {
-        commit('setJoinErroMessage', data.message);
+        commit('setJoinErrorMessage', data.message);
       }
     },
     onSocketEvent_userJoined({ commit }, data) {
@@ -84,7 +88,7 @@ export default new Vuex.Store({
       if (data.status === 'success') {
         commit('setRoom', data.room);
         if (data.end) {
-          console.log(data.end);
+          commit('setWinnerMessage', data.end);
         }
       }
     },

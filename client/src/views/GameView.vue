@@ -4,6 +4,9 @@
     <score-board :me="me" :opponent="opponent" :games="room.games" :turn="room.turn"/>
     <h2>{{ turnDisplay }}</h2>
     <tic-tac-toe-game :board="room.board" :is-my-turn="isMyTurn" @choose-square="chooseSquare"/>
+    <transition name="bounce">
+      <h3 v-if="showWinnerMessage">{{ winnerMessage }}</h3>
+    </transition>
   </div>
 </template>
 
@@ -16,6 +19,19 @@ export default {
   components: {
     TicTacToeGame,
     ScoreBoard
+  },
+  data() {
+    return {
+      showWinnerMessage: false
+    }
+  },
+  watch: {
+    winnerMessage() {
+      this.showWinnerMessage = true;
+      setTimeout(() => {
+        this.showWinnerMessage = false;
+      }, 2000)
+    }
   },
   created() {
     if (Object.keys(this.$store.state.room).length === 0) {
@@ -40,6 +56,9 @@ export default {
         return `It's ` + this.room.turn + `'s turn`
       }
       return 'Waiting for an opponent...'
+    },
+    winnerMessage () {
+      return this.$store.state.winnerMessage;
     }
   },
   methods: {
@@ -56,3 +75,23 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.bounce-enter-active {
+  animation: bounce-in 0.5s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+</style>

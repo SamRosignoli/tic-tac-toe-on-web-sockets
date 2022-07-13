@@ -45,7 +45,12 @@ h1 {
   text-align: center;
 }
 
-h2 {
+h2, h3 {
   text-align: center;
+}
+
+h3 {
+  font-size: 1.5rem;
+  color: #41b783;
 }
 </style>
