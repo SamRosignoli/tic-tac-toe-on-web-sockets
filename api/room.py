@@ -1,10 +1,9 @@
 from helpers import validate_tic_tac_toe
 
 class Room:
-    def __init__(self, room_name, users = None, messages = None, turn = None, games = 0, board = None):
+    def __init__(self, room_name, users = None, turn = None, games = 0, board = None):
         self.room_name = room_name
         self.users = users or {}
-        self.messages = messages or []
         self.turn = turn
         self.games = games
         self.board = board or ['' for i in range(9)]
@@ -61,8 +60,3 @@ class Room:
             self.board = ['' for i in range(9)]
             return 'Stalemate!'
         return None
-
-
-
-    def add_message(self, message):
-        self.messages.append(message)

@@ -34,7 +34,7 @@ export default {
       }
 
       const data = { nickname: this.formNickname, room: this.formRoom };
-      this.$socket.emit('joinGame', data);
+      this.$socket.emit('joinRoom', data);
     }
   }
 }

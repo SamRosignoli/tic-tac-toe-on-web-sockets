@@ -17,7 +17,7 @@ def connect(auth):
         emit('connect', 'Unauthorized')
 
 
-@socketio.on('joinGame')
+@socketio.on('joinRoom')
 def on_join(data):
     nickname = data['nickname']
     sid = request.sid
@@ -30,20 +30,20 @@ def on_join(data):
                 join_room(active_room.room_name)
                 active_room.add_user(nickname)
                 room_data = active_room.to_dict()
-                emit('joinGameSelf', {'status': 'success', 'nickname': nickname }, to=sid)
-                emit('joinGame', {'status': 'success', 'room': room_data, 'message': f'{nickname} has entered the room!'} , to=active_room.room_name)
+                emit('joinRoomSelf', {'status': 'success', 'nickname': nickname }, to=sid)
+                emit('userJoined', {'status': 'success', 'room': room_data, 'message': f'{nickname} has entered the room!'} , to=active_room.room_name)
             else:
-                emit('joinGameSelf', {'status': 'nick-taken', 'message': 'Nickname already taken'}, to=sid)
+                emit('joinRoomSelf', {'status': 'nick-taken', 'message': 'Nickname already taken'}, to=sid)
         else:
-            emit('joinGameSelf', {'status': 'room-taken', 'message': 'Room already taken'}, to=sid)
+            emit('joinRoomSelf', {'status': 'room-taken', 'message': 'Room already taken'}, to=sid)
     else:
         room = Room(requested_room_name)
         join_room(room.room_name)
         room.add_user(nickname)
         active_rooms[room.room_name] = room
         room_data = room.to_dict()
-        emit('joinGameSelf', {'status': 'success', 'nickname': nickname }, to=sid)
-        emit('joinGame', {'status': 'success','room': room_data, 'message': f'{nickname} has entered the room!'} , to=room.room_name)
+        emit('joinRoomSelf', {'status': 'success', 'nickname': nickname }, to=sid)
+        emit('userJoined', {'status': 'success','room': room_data, 'message': f'{nickname} has entered the room!'} , to=room.room_name)
 
 
 @socketio.on('chooseSquare')
@@ -58,21 +58,7 @@ def on_choose_square(data):
     return_data = {'status': 'success','room': room_data}
     if (end_result):
         return_data['end'] = end_result
-    emit('updateGame', return_data , to=room.room_name)
-
-
-@socketio.on('message')
-def on_message(data):
-    nickname = data['nickname']
-    room_name = data['room']
-    message = data['message']
-
-    new_message = { 'nickname': nickname, 'message': message }
-
-    room = active_rooms[room_name]
-
-    room.add_message(new_message)
-    emit('message', {'status': 'success', 'room': room.to_dict()}, to=room.room_name)
+    emit('updateRoom', return_data , to=room.room_name)
 
 
 if __name__ == '__main__':

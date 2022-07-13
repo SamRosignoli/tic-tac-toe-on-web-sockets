@@ -67,7 +67,7 @@ export default new Vuex.Store({
         commit('setConnected', result !== "Unauthorized");
       }
     },
-    onSocketEvent_joinGameSelf({ commit }, data) {
+    onSocketEvent_joinRoomSelf({ commit }, data) {
       if (data.status === 'success') {
         commit('setNickname', data.nickname);
         router.push('game');
@@ -75,12 +75,12 @@ export default new Vuex.Store({
         commit('setJoinErroMessage', data.message);
       }
     },
-    onSocketEvent_joinGame({ commit }, data) {
+    onSocketEvent_userJoined({ commit }, data) {
       if (data.status === 'success') {
         commit('setRoom', data.room);
       }
     },
-    onSocketEvent_updateGame({ commit }, data) {
+    onSocketEvent_updateRoom({ commit }, data) {
       if (data.status === 'success') {
         commit('setRoom', data.room);
         if (data.end) {
